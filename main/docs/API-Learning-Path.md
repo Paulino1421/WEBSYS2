@@ -37,6 +37,7 @@ The original verification route answers whether one submitted document is valid.
 | `GET /api/v1/verifications/{reference}` | `verification:read` | One document's review/date/training validity |
 | `GET /api/v1/employees/{reference}/compliance` | `compliance:read` | Current job eligibility and required qualification states |
 | `GET /api/v1/facilities/{facility}/compliance` | `compliance:read` | Active Staff totals and facility compliance rate |
+| `GET /api/v1/facilities/{facility}/employees` | `compliance:read` | Paginated current compliance status for active Staff |
 
 The employee reference is the opaque `employee_reference` already returned by document verification; a numeric user ID cannot replace it. The facility parameter is a numeric facility ID supplied by the organization administrator for the auditor's assigned region. There is no unscoped employee search or facility directory. Neither summaries nor document verification grant file access.
 
@@ -48,6 +49,43 @@ Host: websys2.test
 Accept: application/json
 Authorization: Bearer YOUR_PRIVATE_TOKEN
 ```
+
+### List a facility's active Staff compliance
+
+`GET /api/v1/facilities/{facility}/employees` uses the facility's numeric ID and requires the literal `compliance:read` ability. It returns active Staff for that facility in ID order, with 25 records per page by default. Use `?per_page=` for 1–100 records; invalid values receive a validation error. The response includes Laravel pagination metadata and a limited compliance summary for each employee:
+
+```json
+{
+  "data": [
+    {
+      "employee_reference": "OPAQUE_EMPLOYEE_REFERENCE",
+      "status": "eligible",
+      "duty_status": "Cleared for duty",
+      "required_count": 4,
+      "satisfied_count": 4,
+      "qualification_percentage": 100,
+      "evaluated_on": "YYYY-MM-DD"
+    }
+  ],
+  "links": {
+    "first": "PAGE_URL",
+    "last": "PAGE_URL",
+    "prev": null,
+    "next": null
+  },
+  "meta": {
+    "current_page": 1,
+    "from": 1,
+    "last_page": 1,
+    "path": "ENDPOINT_URL",
+    "per_page": 25,
+    "to": 1,
+    "total": 1
+  }
+}
+```
+
+Each result excludes names, email addresses, database IDs, facility details, and qualification-level items. The facility must be active and in the auditor's assigned region.
 
 The employee Resource returns only `employee_reference`, `status`, `duty_status`, `required_count`, `satisfied_count`, `qualification_percentage`, `evaluated_on`, and `qualifications`. Each qualification includes its label/domain, state, training completion, effective expiry, and expiring-soon flag. It excludes employee names, emails, database user/document IDs, private paths, reviewer notes, and document contents. A pending renewal does not replace an older valid approval. Missing job/requirements yields `not_assessable` and a null percentage.
 
@@ -70,7 +108,7 @@ For `GET /api/v1/facilities/1/compliance`, an illustrative response is:
 }
 ```
 
-The rate is eligible / assessable active Staff ? 100, rounded to two decimals. Inactive accounts and non-Staff roles are excluded; unassessable active Staff are reported separately. An empty facility or one without assessable Staff returns a null rate, never an implied 100%. Only the current active facility/region is accessible. Both summaries use `private, no-store`, evaluate the Manila date once per response, and create no assessment snapshots or review events. Facility totals process employees in eager-loaded batches of 100. The 60/minute/account limit is shared across all three routes and all of that auditor's tokens.
+The rate is eligible / assessable active Staff ? 100, rounded to two decimals. Inactive accounts and non-Staff roles are excluded; unassessable active Staff are reported separately. An empty facility or one without assessable Staff returns a null rate, never an implied 100%. Only the current active facility/region is accessible. All three compliance routes use `private, no-store` and create no assessment snapshots or review events. Facility totals process employees in eager-loaded batches of 100. The 60/minute/account limit is shared across all four routes and all of that auditor's tokens.
 
 ## 4 Add Sanctum tokens and permissions
 
