@@ -6,7 +6,7 @@
     </div>
     <section class="panel mb-6">
         <div class="flex flex-wrap items-center justify-between gap-5">
-            <div><x-status-badge :status="$assessment['status']" /><p class="mt-3 text-sm text-slate-600">{{ $assessment['satisfied_count'] }} of {{ $assessment['required_count'] }} required qualifications satisfied</p></div>
+            <div><x-status-badge :status="$assessment['status']" /><x-status-badge :status="$assessment['status']" :label="\App\Enums\ComplianceStatus::from($assessment['status'])->dutyLabel()" /><p class="mt-3 text-sm text-slate-600">{{ $assessment['satisfied_count'] }} of {{ $assessment['required_count'] }} required qualifications satisfied</p></div>
             <p class="text-3xl font-semibold tracking-tight">{{ $assessment['percentage'] === null ? '--' : $assessment['percentage'].'%' }}<span class="mt-1 block text-xs font-normal text-slate-500">{{ $assessment['percentage'] === null ? 'Not assessable' : 'Requirements satisfied' }}</span></p>
         </div>
         @if($assessment['reason'])<p class="notice notice-warning mt-5">{{ $assessment['reason'] }}</p>@endif
