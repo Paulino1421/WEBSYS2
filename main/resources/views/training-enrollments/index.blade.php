@@ -50,6 +50,9 @@
                                 @csrf
                                 @method('PATCH')
                                 <input type="hidden" name="_completion_enrollment" value="{{ $enrollment->id }}">
+                                @foreach(request()->only('search', 'status', 'facility_id') as $name => $value)
+                                    <input type="hidden" name="filters[{{ $name }}]" value="{{ $value }}">
+                                @endforeach
                                 <div>
                                     <label for="completed-{{ $enrollment->id }}" class="text-sm font-medium">Completion date (Asia/Manila)</label>
                                     <input id="completed-{{ $enrollment->id }}" name="completed_at" type="date" value="{{ $retrying ? old('completed_at') : '' }}" class="field" max="{{ now('Asia/Manila')->toDateString() }}" min="{{ $enrollment->enrolled_at->timezone('Asia/Manila')->toDateString() }}" required>

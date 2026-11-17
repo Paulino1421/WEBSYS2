@@ -3,12 +3,20 @@
 ## Current status
 
 **Stage:** all planned modules implemented; local synthetic dataset loaded; Manager/Officer workflow and Admin issuance-form reviews complete. Retained backup restored into the separate recovery checkout; table counts, private-file hashes, migrations, and restored-access invalidation verified. Fresh recovery sign-in/protected-file/history walkthrough remains pending.
-**Last updated:** 2026-11-12.
+**Last updated:** 2026-11-17.
 **Application status:** Authentication/onboarding, Admin organization and qualification management, job requirements, scoped employee pages, safe deactivation, private-storage configuration, and MySQL tests are implemented. Courses, enrollment, completion, and scoped training progress are implemented. Private submissions, protected downloads, review events, and effective-evidence selection are implemented. Live compliance calculations, scoped dashboards/matrix, material assessment history, and daily history reconciliation are implemented. In-app expiry alerts, immutable audit snapshots, corrective findings, and scoped CSV reports are implemented. The restricted auditor API and Admin token management are implemented.
 
 The full scope is in [System specification](System-Proposal.md), decisions and local service needs in [Development decisions](Development-Decisions.md), and the next-session brief in [Kickstart prompt](Kickstart-Prompt.md). The owner will provide the deadline and team experience later; no delivery date is promised.
 
-**Release acceptance follow-up:** PRs #15, #16, #17, and #19 are now merged into `main` (confirmed on GitHub). A fresh branch starts from merged revision `4228dc2`. The full serial suite at that revision passed **255 tests / 2,023 assertions**, including the real MySQL/private-file recovery check; the Vite build, all 8 JavaScript form tests, and strict Composer validation passed. The Manager-to-Officer corrective workflow has now also been exercised through the real Browser, as described below. These results do not complete production deployment acceptance.
+**Repository reconciliation (2026-11-17):** the local checkout was still at `177fd93` (milestone 4 interface work). It was clean and advanced without rewriting history to merged `main` revision `5744084` (through PR #26). A review reporting 178 tests / six JavaScript tests was accurate for the older checkout, not the latest merged project. All 16 development migrations are already applied. The three regional auditor endpoints, standard factory seeding, isolated unit tests, alerts/audits/findings/reports, and duty-clearance labels are present. Historical per-milestone test counts below remain evidence for those revisions.
+
+**Latest verification (2026-11-17):** the merged baseline passed 355 PHP tests / 2,498 assertions. After the training review-context fix below, the full serial suite passed **362 PHP tests / 2,554 assertions** on guarded MySQL `checkpoint_test`, including the MySQL/private-file recovery group. All **24 JavaScript tests**, Pint, strict Composer validation, production Vite build, Blade compilation/clear, and whitespace checks passed. No development data, credentials, migrations, or dependencies changed.
+
+**Remaining acceptance work:**
+
+- Fresh desktop/mobile and assistive-technology review of current automatic filters, training completion forms, pagination focus, and matrix scrolling. Earlier captured reviews are historical evidence, not checks of every subsequent edit.
+- Fresh human sign-in, protected-file download, and finding/review-history walkthrough in the separate recovered checkout. Its data/hash/migration/access-invalidation checks passed previously; do not restore or invalidate it again just to repeat a status review.
+- Before deployment: actual organization configuration, HTTPS, production secrets/debug settings, real mail delivery, scheduler monitoring, private backups, and completed human acceptance. No public deployment has been performed.
 
 ## Milestones and acceptance criteria
 
@@ -427,3 +435,12 @@ Completion entries are protected from automatic result replacement, including la
 Public reference observations, historical screenshot comparison, and manual review limits are recorded in [the usability decision](Development-Decisions.md#training-and-matrix-usability-follow-up). Verify the changed training/matrix screens on desktop and mobile before accepting this interaction: complete/clear a draft, change filters while a request is pending, submit an invalid completion, use Back/Forward and pagination, follow evidence links, and scroll the matrix with keyboard/touch. Automated coverage does not establish these visual/assistive-technology outcomes.
 
 Validation on 2026-11-13: 351 PHP tests / 2,491 assertions passed serially on guarded MySQL `checkpoint_test`, including the recovery group with MySQL clients on PATH. All 24 Node interaction tests passed. Pint, strict Composer validation, Vite production build, Blade compilation/clear, and whitespace checks passed. No development records, credentials, dependencies, or migrations changed.
+
+
+## Training review context and status reconciliation (2026-11-17)
+
+Recording completion now returns the officer to the same search, training status, and facility filters. It returns to page one because completing the last awaiting-completion row can remove a result page. Filters are submitted as a separate allowlisted, validated `filters` array; only completion date, feedback, status, and officer identity are persisted by the existing transaction. The redirect uses the internal named route, never a user-supplied return URL. The completed row disappears when the active filter is awaiting completion; the success message confirms why. Submissions without filter context keep the original unfiltered redirect.
+
+Regression coverage checks the rendered hidden context, retained filters after completion, no stale page, saved actor/feedback, and rejection of malformed, unknown, or out-of-range filter data before any write. Existing self-completion, immutability, date, and scope tests remain in place. This change preserves the existing layout and prior reference-interface decisions; no fresh browser/mobile or public screenshot comparison was performed for the hidden-context/redirect correction.
+
+The README, current status, kickoff prompt, specification, and API guide now reflect merged milestones 5-7 and the new employee API `duty_status` label. The guide explains that clients use `status` for logic; the label is derived, not a separate dispatch authorization mechanism. Production setup and the outstanding human checks remain separate acceptance tasks.
