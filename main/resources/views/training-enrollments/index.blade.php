@@ -1,5 +1,13 @@
 <x-layout title="Training progress">
-<div x-data="liveFilters" @popstate.window="restore()" @click="follow($event)">
+<div x-data="liveFilters({ protectCompletion: true })" @popstate.window="restore()" @click="follow($event)">
+    <dialog data-unsaved-dialog aria-labelledby="unsaved-title" class="m-auto w-full max-w-md rounded-2xl bg-white p-6 shadow-xl backdrop:bg-slate-900/40" @cancel="cancelLeaving()">
+        <h2 id="unsaved-title" class="text-lg font-semibold">Leave without saving?</h2>
+        <p class="mt-3 text-sm text-slate-600">Your completion date and notes have not been saved.</p>
+        <div class="mt-6 flex flex-wrap gap-3">
+            <button type="button" class="button" @click="cancelLeaving()" autofocus>Stay on this page</button>
+            <button type="button" class="button-secondary" @click="confirmLeaving()" x-text="leaveIntent === 'reload' ? 'Reload without saving' : 'Leave without saving'">Leave without saving</button>
+        </div>
+    </dialog>
     <div class="mb-8 flex flex-wrap items-start justify-between gap-4">
         <div>
             <h1 class="text-3xl font-bold">Training progress</h1>
