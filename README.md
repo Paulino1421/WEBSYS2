@@ -2,6 +2,14 @@
 
 CheckPoint is a Regional Safety Compliance Management System for healthcare logistics. The Laravel foundation, organization/qualification management, and training courses/enrollment are implemented. Private credentials and review history are implemented. Live compliance calculations, scoped dashboards, the qualification matrix, and material assessment history are implemented. In-app expiry alerts, fixed audit snapshots, corrective work, and scoped CSV reports are implemented. The restricted auditor API and Admin token management are implemented.
 
+## Current project status
+
+Milestones 0-7 are implemented. Remaining acceptance work is the fresh desktop/mobile and assistive-technology review of the latest filtering/training interfaces, the human recovery sign-in/download/history walkthrough, and organization-specific production configuration. Automated test success does not establish deployment readiness. See [the current verification and remaining work](main/docs/Implementation.md#current-status).
+
+Before a status review, run `git status --short`, `git fetch origin`, and `git log -1 --oneline`, then compare `git rev-parse HEAD` with `git rev-parse origin/main`. An older branch describes an older product. If local `main` is clean and has no divergent commits, `git pull --ff-only origin main` advances it without rewriting history. Review local changes/divergence before switching or merging; never reset a checkout to make a status report match.
+
+**Latest local verification (2026-11-17):** 362 PHP tests / 2,554 assertions and 24 JavaScript tests passed, with production assets built, Blade compilation, Pint, and strict Composer validation passing. These automated results do not replace the pending human acceptance checks.
+
 ## Available now
 
 - Laravel 13.40, Fortify 1.41, Blade, Tailwind 4, Alpine.js, and Vite 8, with committed dependency lockfiles.
@@ -13,12 +21,12 @@ CheckPoint is a Regional Safety Compliance Management System for healthcare logi
 - Draft/published/archived courses, Staff self-enrollment, Officer-recorded completion, and scoped training progress.
 - Private PDF/JPEG/PNG submissions, protected attachment downloads, append-only submission/review events, and officer review.
 - Current qualifying-evidence selection preserves older valid approvals while renewals are pending or rejected.
-- Live employee eligibility, qualification matrix, scoped dashboard denominators, and append-only material assessment snapshots.
+- Live employee eligibility and duty-clearance labels, qualification matrix, scoped dashboard denominators, and append-only material assessment snapshots.
 - Daily Manila-time reconciliation and deduplicated staff/manager expiry alerts, with live status calculated even when scheduling stops.
 - Officer-captured facility/regional audits, fixed readiness snapshots, assigned corrective work, officer verification, and retained activity.
 - Scoped readiness, expiry, training, and findings reports with CSV downloads protected against spreadsheet formulas.
 - Regional, read-only auditor verification with Sanctum 4.4, opaque references, explicit ability checks, expiry/revocation, and rate limits; Admin manages Auditor access.
-- An opt-in local synthetic dataset with 1,690 related records, harmless downloadable evidence, all six roles, and a joined HTTP workflow test.
+- Standard fresh local/testing seeding of 1,690 related synthetic records (plus catalogs), with an optional private-password command, harmless downloadable evidence, all six roles, and a joined HTTP workflow test.
 - PHPUnit tests with an isolated MySQL database, Pint, and a GitHub Actions workflow.
 
 The target is a local classroom demo using Herd and MySQL. PostgreSQL is not used. No paid service or extra coding agent is required.
@@ -259,7 +267,7 @@ On this Windows installation, the clients are in `C:\Program Files\MySQL\MySQL S
 
 These automated checks do not replace the remaining human desktop/mobile walkthroughs or a recovery rehearsal into a separate checkout/database using an actual retained backup. The local synthetic dataset is now loaded; its password remains private. Other installations require their own private setup.
 
-The local Manager-to-Officer browser walkthrough passed on 2026-11-11 at desktop/mobile viewport sizes: fictional finding #1 progressed through Manager submission to independent Officer resolution, retaining three activity entries. Cross-facility access returned 404. Its sample title remains the original fixture title; the status badge and activity show its current resolved state. See the [acceptance evidence and remaining checks](main/docs/Implementation.md#manager-and-officer-acceptance-follow-up). The merged baseline passed 255 PHP tests / 2,023 assertions, eight JavaScript tests, the production asset build, and strict Composer validation; focused tests cover the subsequent resolved-state form fix.
+The local Manager-to-Officer browser walkthrough passed on 2026-11-11 at desktop/mobile viewport sizes: fictional finding #1 progressed through Manager submission to independent Officer resolution, retaining three activity entries. Cross-facility access returned 404. Its sample title remains the original fixture title; the status badge and activity show its current resolved state. See the [acceptance evidence and remaining checks](main/docs/Implementation.md#manager-and-officer-acceptance-follow-up). The historical 2026-11-11 baseline passed 255 PHP tests / 2,023 assertions, eight JavaScript tests, the production asset build, and strict Composer validation; focused tests cover the subsequent resolved-state form fix.
 
 The owner confirmed the private password-reset and subsequent sign-in for `unassigned@checkpoint.example` passed on 2026-11-11. That account now uses its new private password instead of the shared sample password. The retained backup was restored into the separate `checkpoint_recovery` database/site on 2026-11-12: all 26 table counts and four private-file hashes matched, and restored access was invalidated before reopening. Fresh recovery sign-in/protected-download/history checks remain outstanding; see the [rehearsal record](main/docs/Implementation.md#retained-backup-rehearsal).
 

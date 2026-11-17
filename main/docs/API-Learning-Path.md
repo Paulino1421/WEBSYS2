@@ -49,7 +49,9 @@ Accept: application/json
 Authorization: Bearer YOUR_PRIVATE_TOKEN
 ```
 
-The employee Resource returns only `employee_reference`, `status`, `required_count`, `satisfied_count`, `qualification_percentage`, `evaluated_on`, and `qualifications`. Each qualification includes its label/domain, state, training completion, effective expiry, and expiring-soon flag. It excludes employee names, emails, database user/document IDs, private paths, reviewer notes, and document contents. A pending renewal does not replace an older valid approval. Missing job/requirements yields `not_assessable` and a null percentage.
+The employee Resource returns only `employee_reference`, `status`, `duty_status`, `required_count`, `satisfied_count`, `qualification_percentage`, `evaluated_on`, and `qualifications`. Each qualification includes its label/domain, state, training completion, effective expiry, and expiring-soon flag. It excludes employee names, emails, database user/document IDs, private paths, reviewer notes, and document contents. A pending renewal does not replace an older valid approval. Missing job/requirements yields `not_assessable` and a null percentage.
+
+`duty_status` is a readable label derived from `status`: `eligible` means "Cleared for duty", `not_eligible` means "Restricted from duty", and `not_assessable` means "Duty status pending". Clients should branch on the stable `status` value and display the label. It adds no separate scheduling, attendance, or dispatch permission. CheckPoint reports readiness; any dispatch integration must consult the current result at assignment time.
 
 For `GET /api/v1/facilities/1/compliance`, an illustrative response is:
 
